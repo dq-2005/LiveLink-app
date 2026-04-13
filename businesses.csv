@@ -1,0 +1,8 @@
+id,name,category,address,phone,description,owner_email,is_open,open_time,close_time
+1,Bean & Brew Café,Cafe,"123 High Street, London",020 7946 0958,Cozy coffee shop,cafe@example.com,True,07:30,18:00
+2,Cut & Style Salon,Hair Salon,"45 Market Lane, London",020 7946 1122,Modern hair salon,salon@example.com,True,09:00,19:00
+3,FreshFit Gym,Fitness Studio,"78 Park Road, London",020 7946 3344,Personal training,gym@example.com,True,06:00,22:00
+4,The Little Bakery,Bakery,"12 Station Approach, London",020 7946 5566,Artisan bakery,bakery@example.com,True,07:00,16:00
+5,TechFix Repair,Repair Services,"67 Grove Lane, London",020 7946 7788,Gadget repairs,repair@example.com,True,10:00,18:00
+6,LeonneLuxe,Salon,Homerton,00000000000,,ria@gmail.com,True,09:00,17:00
+7,Business,Other,Business Lane 123,0712345678,New Business,business@gmail.com,True,09:00,17:00

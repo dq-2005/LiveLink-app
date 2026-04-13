@@ -1,0 +1,6 @@
+id,name,email,password,user_type,phone
+1,Ria,ria@gmail.com,a491e9e6d728007a44302265cc5a45e5b7f9fed10426415942cd1521fca4308d,business,0.0
+2,Fazana,fazana@gmail.com,8a151e2d2dd80bfef5e2e56815d8ed0e8b8ae22dc43ff8a2dbd9f35a29fe2657,customer,
+3,Customer,customer@gmail.com,7e69dfb097eaa4536612f67c54b82af2585904178cf86a16f9887cce76189354,customer,
+4,Business,business@gmail.com,35c1a48981e98f1f5586d1c0fd65b06ca7af89b49f2834a647abcc9c578d2dde,business,712345678.0
+5,Customer,customer@example.com,5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8,customer,
