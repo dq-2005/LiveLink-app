@@ -5,9 +5,7 @@ from datetime import datetime
 import re
 import uuid
 import resend
-from dotenv import load_dotenv
-
-load_dotenv()
+import streamlit as st   # Required for Streamlit Cloud secrets
 
 
 class Backend:
@@ -21,10 +19,25 @@ class Backend:
         self.SUBSCRIPTIONS_FILE = "subscriptions.csv"
         self.PAYMENTS_FILE = "payments.csv"
 
-        #Email Configuration
-        resend.api_key = os.getenv("RESEND_API_KEY")
-        self.FROM_EMAIL = os.getenv("FROM_EMAIL", "NO-REPLY@LiveLink.app")
+        # Email Configuration - Works on BOTH local and Streamlit Cloud
+        self.setup_email_config()
+
         self.init_db()
+
+    def setup_email_config(self):
+        """Handles email configuration for local (.env) and Streamlit Cloud (secrets)"""
+        if hasattr(st, "secrets") and "RESEND_API_KEY" in st.secrets:
+            # Running on Streamlit Cloud
+            resend.api_key = st.secrets["RESEND_API_KEY"]
+            self.FROM_EMAIL = st.secrets.get("FROM_EMAIL", "NO-REPLY@LiveLink.app")
+            print("✅ Using Streamlit Secrets for email configuration")
+        else:
+            # Running locally with .env file
+            from dotenv import load_dotenv
+            load_dotenv()
+            resend.api_key = os.getenv("RESEND_API_KEY")
+            self.FROM_EMAIL = os.getenv("FROM_EMAIL", "NO-REPLY@LiveLink.app")
+            print("✅ Using .env file for email configuration")
 
     def hash_password(self, password):
         return hashlib.sha256(password.encode()).hexdigest()
@@ -61,7 +74,7 @@ class Backend:
         self.load(self.SUBSCRIPTIONS_FILE, ["user_email", "business_id", "timestamp"])
         self.load(self.PAYMENTS_FILE, ["id", "booking_id", "user_email", "business_id", "amount", "status", "transaction_id", "timestamp"])
 
-    # Email notifications
+    # ====================== EMAIL NOTIFICATIONS ======================
     def send_email(self, to_email: str, subject: str, html_body: str):
         try:
             response = resend.Emails.send({
@@ -155,7 +168,7 @@ class Backend:
             """
             self.send_email(owner_email, f"Booking Cancelled - {business_name}", html_owner)
 
-    #Payment System
+    # ====================== PAYMENT SYSTEM ======================
     def process_payment(self, amount: float, card_details: dict):
         """Improved realistic test payment processor"""
         card_number = str(card_details.get("card_number", "")).replace(" ", "").replace("-", "")
@@ -224,7 +237,6 @@ class Backend:
                 "message": result["message"]
             }
 
-    #
     def get_time_options(self):
         return [f"{h:02d}:{m:02d}" for h in range(24) for m in range(0, 60, 15)]
 
@@ -488,6 +500,7 @@ class Backend:
             return 0.0
         biz_reviews = reviews[pd.to_numeric(reviews.get("business_id", 0), errors='coerce') == int(business_id)]
         return round(biz_reviews["rating"].mean(), 1) if not biz_reviews.empty else 0.0
+
 
 
 backend = Backend()
